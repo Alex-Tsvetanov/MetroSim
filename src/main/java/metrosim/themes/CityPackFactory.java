@@ -1,1 +1,9 @@
-package metrosim.themes; public interface CityPackFactory { Palette palette(); String cityName(); int gridSize(); }
+package metrosim.themes;
+
+public interface CityPackFactory {
+  Palette palette();
+
+  String cityName();
+
+  int gridSize();
+}
