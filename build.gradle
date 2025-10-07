@@ -1,6 +1,14 @@
 plugins {
     id 'application'
     id 'java'
+    id 'com.diffplug.spotless' version '6.25.0'
+}
+
+spotless {
+    java {
+        target 'src/**/*.java'
+        googleJavaFormat('1.17.0')  // pick a version compatible with your toolchain
+    }
 }
 
 java {
