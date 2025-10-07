@@ -9,20 +9,13 @@ java {
     }
 }
 
-repositories {
-    mavenCentral()
-}
+repositories { mavenCentral() }
 
-application {
-    mainClass = 'metrosim.app.MetroSimApp'
-}
+application { mainClass = 'metrosim.app.MetroSimApp' }
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
     options.release = 17
 }
 
-tasks.run {
-    // Make Swing apps not headless
-    jvmArgs '-Djava.awt.headless=false'
-}
+tasks.run { jvmArgs '-Djava.awt.headless=false' }
