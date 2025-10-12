@@ -26,4 +26,11 @@ tasks.withType(JavaCompile).configureEach {
     options.release = 17
 }
 
-tasks.run { jvmArgs '-Djava.awt.headless=false' }
+tasks.named('run', JavaExec) {
+    jvmArgs '-Djava.awt.headless=false'
+    // 👇 forward the CLI system property from Gradle to your app's JVM
+    def v = System.getProperty('metrosim.cityPack')
+    if (v != null) {
+        systemProperty 'metrosim.cityPack', v
+    }
+}

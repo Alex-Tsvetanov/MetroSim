@@ -52,6 +52,7 @@ public final class Bootstrap {
     var loader = ServiceLoader.load(CityPackFactory.class);
     for (CityPackFactory f : loader) {
       String name = f.cityName().toLowerCase();
+      System.out.println("Found city pack: " + name + ", wanted: " + want);
       if (!want.isEmpty() && (name.contains(want) || name.equals(want))) {
         chosen = f;
         break;
