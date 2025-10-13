@@ -1,0 +1,1426 @@
+\documentclass{article}
+
+% ---------- Encoding, language, fonts ----------
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[bulgarian]{babel}
+\usepackage{lmodern}           % по-пълен набор шрифтове (вкл. tt)
+\renewcommand{\ttdefault}{lmtt} % моноширинен от lmodern
+
+% ---------- Page layout ----------
+\usepackage[margin=1in]{geometry}
+\setlength{\headheight}{14pt}   % за fancyhdr предупреждението
+
+% ---------- Graphics, floats, colors ----------
+\usepackage{graphicx}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{float}              % за [H]
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{subcaption}
+
+% ---------- Math, tables ----------
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{array}
+\usepackage{booktabs}
+
+% ---------- Lists, structure ----------
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage{parskip}
+\usepackage[toc,page]{appendix}
+\usepackage[compact]{titlesec}
+\usepackage{tocloft}
+
+% ---------- Code listings (UTF-8) ----------
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{listingsutf8}
+\lstdefinelanguage{JavaCustom}{
+	language=Java,
+	morekeywords={var, record},        % for Java 17 features
+	sensitive=true,
+	morecomment=[l]{//},
+	morecomment=[s]{/*}{*/},
+	morestring=[b]",
+}
+
+\lstset{
+	language=JavaCustom,
+	basicstyle=\ttfamily\small,
+	keywordstyle=\color{RoyalBlue}\bfseries,
+	stringstyle=\color{ForestGreen},
+	commentstyle=\color{gray}\itshape,
+	numbers=left,
+	numberstyle=\tiny\color{gray},
+	stepnumber=1,
+	numbersep=6pt,
+	showspaces=false,
+	showstringspaces=false,
+	breaklines=true,
+	tabsize=2,
+	frame=single,
+	captionpos=b,
+	inputencoding=utf8,
+	extendedchars=true,
+	literate=
+	{а}{{\cyrchar\cyra}}1 {б}{{\cyrchar\cyrb}}1 {в}{{\cyrchar\cyrv}}1
+	{г}{{\cyrchar\cyrg}}1 {д}{{\cyrchar\cyrd}}1 {е}{{\cyrchar\cyre}}1
+	{ж}{{\cyrchar\cyrzh}}1 {з}{{\cyrchar\cyrz}}1 {и}{{\cyrchar\cyri}}1
+	{й}{{\cyrchar\cyrishrt}}1 {к}{{\cyrchar\cyrk}}1 {л}{{\cyrchar\cyrl}}1
+	{м}{{\cyrchar\cyrm}}1 {н}{{\cyrchar\cyrn}}1 {о}{{\cyrchar\cyro}}1
+	{п}{{\cyrchar\cyrp}}1 {р}{{\cyrchar\cyrr}}1 {с}{{\cyrchar\cyrs}}1
+	{т}{{\cyrchar\cyrt}}1 {у}{{\cyrchar\cyru}}1 {ф}{{\cyrchar\cyrf}}1
+	{х}{{\cyrchar\cyrh}}1 {ц}{{\cyrchar\cyrc}}1 {ч}{{\cyrchar\cyrch}}1
+	{ш}{{\cyrchar\cyrsh}}1 {щ}{{\cyrchar\cyrshch}}1 {ъ}{{\cyrchar\cyrhrdsn}}1
+	{ь}{{\cyrchar\cyrsftsn}}1 {ю}{{\cyrchar\cyryu}}1 {я}{{\cyrchar\cyrya}}1
+	{А}{{\cyrchar\CYRA}}1 {Б}{{\cyrchar\CYRB}}1 {В}{{\cyrchar\CYRV}}1
+	{Г}{{\cyrchar\CYRG}}1 {Д}{{\cyrchar\CYRD}}1 {Е}{{\cyrchar\CYRE}}1
+	{Ж}{{\cyrchar\CYRZH}}1 {З}{{\cyrchar\CYRZ}}1 {И}{{\cyrchar\CYRI}}1
+	{Й}{{\cyrchar\CYRISHRT}}1 {К}{{\cyrchar\CYRK}}1 {Л}{{\cyrchar\CYRL}}1
+	{М}{{\cyrchar\CYRM}}1 {Н}{{\cyrchar\CYRN}}1 {О}{{\cyrchar\CYRO}}1
+	{П}{{\cyrchar\CYRP}}1 {Р}{{\cyrchar\CYRR}}1 {С}{{\cyrchar\CYRS}}1
+	{Т}{{\cyrchar\CYRT}}1 {У}{{\cyrchar\CYRU}}1 {Ф}{{\cyrchar\CYRF}}1
+	{Х}{{\cyrchar\CYRH}}1 {Ц}{{\cyrchar\CYRC}}1 {Ч}{{\cyrchar\CYRCH}}1
+	{Ш}{{\cyrchar\CYRSH}}1 {Щ}{{\cyrchar\CYRSHCH}}1 {Ъ}{{\cyrchar\CYRHRDSN}}1
+	{Ь}{{\cyrchar\CYRSFTSN}}1 {Ю}{{\cyrchar\CYRYU}}1 {Я}{{\cyrchar\CYRYA}}1
+	{„}{{\guillemotleft}}1 {“}{{\textquotedblright}}1 {”}{{\textquotedblright}}1
+	{’}{{'}}1 {–}{{--}}1 {—}{{---}}1
+}
+
+
+% ---------- TikZ, UML, PGFPlots ----------
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,backgrounds,calc,shapes.multipart}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\pgfplotsset{compat=1.18}
+\usepackage{tikz-uml}           % за UML (вкл. umlseqdiag)
+
+%\usepackage{polyglossia}
+
+% ---------- Misc ----------
+\usepackage{titlepic}
+\usepackage{fancyhdr}
+\usepackage{gensymb}
+\usepackage{fancyvrb}
+\usepackage{eurosym}
+\usepackage{soul}
+\usepackage{setspace}
+\usepackage{siunitx}
+\usepackage{blindtext}
+\usepackage{lscape}
+\usepackage{cite}
+
+% ---------- Header / Footer ----------
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{MetroSim - Документация}
+\lhead{\leftmark}
+\cfoot{\thepage}
+
+% ---------- Colors used in TikZ figures ----------
+\definecolor{lightblue}{RGB}{173,216,230}
+\definecolor{lightgreen}{RGB}{144,238,144}
+\definecolor{lightyellow}{RGB}{255,255,224}
+\definecolor{lightcoral}{RGB}{240,128,128}
+
+% ---------- Hyperref (винаги последен) ----------
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	urlcolor=blue,
+	pdftitle={MetroSim - Документация},
+	pdfauthor={Александър Цветанов}
+}
+
+% ---------- Title ----------
+\title{\Huge\textbf{MetroSim} \\
+	\Large Симулатор на транспортна мрежа с паралелна обработка \\
+	\large Документация на проекта}
+
+\author{Алекс Цветанов, 121222225, КСИ, ФКСТ\\Кирил Вълков, 121222194, КСИ, ФКСТ}
+\date{\today}
+
+\begin{document}
+	
+	\maketitle
+	\newpage
+	
+	\tableofcontents
+	\newpage
+	
+	\section{Въведение}
+	
+	\subsection{Обща информация за проекта}
+	
+	\textbf{MetroSim} е десктоп симулатор на транспортна мрежа, който визуализира движението на превозни средства в опростена метро/автобусна система. Проектът е изграден с \textbf{Java 17} и използва \textbf{Swing} за графичния интерфейс.
+	
+	Основната цел на приложението е да демонстрира как множество \textbf{шаблони за проектиране (Design Patterns)} могат да бъдат комбинирани в \textbf{паралелно, събитийно и разширяемо приложение}. Това го прави отлична примерна имплементация за университетски курсове по:
+	
+	\begin{itemize}
+		\item \textbf{Шаблони за проектиране} – демонстрация на практическото приложение на GoF шаблоните
+		\item \textbf{Паралелно програмиране} – безопасна работа с нишки в графични приложения
+		\item \textbf{Софтуерна архитектура} – изграждане на модулни и разширяеми системи
+	\end{itemize}
+	
+	\subsection{Ключови характеристики}
+	
+	\begin{itemize}
+		\item \textbf{Реално време симулация} на превозни средства и световен часовник
+		\item \textbf{Отзивчив Swing интерфейс} – актуализации чрез неизменяеми \texttt{WorldSnapshot} обекти
+		\item \textbf{Безопасен паралелизъм} използвайки \texttt{ForkJoinPool} и \texttt{ScheduledExecutorService}
+		\item \textbf{Разширяем дизайн} – нови маршрутизатори, градове и метрики чрез плъгини
+		\item \textbf{Command pattern каркас} за бъдещи функции за редактиране/undo-redo
+	\end{itemize}
+	
+	\subsection{Технически изисквания}
+	
+	\begin{itemize}
+		\item Java Development Kit (JDK) 17 или по-нова версия
+		\item Gradle за управление на зависимостите и билд процеса
+		\item Операционна система: Windows, macOS, Linux с поддръжка на Java Swing
+	\end{itemize}
+	
+	\section{Идея и концепция на приложението}
+	
+	\subsection{Основна идея}
+	
+	Основната идея зад MetroSim е да се създаде симулатор, който моделира реалистично поведение на транспортна мрежа. Всяко превозно средство в системата:
+	
+	\begin{enumerate}
+		\item \textbf{Започва} от определен възел (позиция) в мрежата
+		\item \textbf{Движи се} стъпка по стъпка към крайната си дестинация
+		\item \textbf{Спира} за кратък престой („dwell") при достигане на дестинацията
+		\item \textbf{Обръща посоката} и продължава към нова дестинация
+		\item \textbf{Работи едновременно} с всички останали превозни средства в системата
+	\end{enumerate}
+	
+	\subsection{Симулационен модел}
+	
+	Симулацията се основава на \textbf{дискретно време} с фиксирани интервали (tick-ове). На всеки tick всички превозни средства актуализират своето състояние паралелно. Това позволява:
+	
+	\begin{itemize}
+		\item \textbf{Детерминистично поведение} – резултатите са предвидими и възпроизводими
+		\item \textbf{Ефективна паралелизация} – всяко превозно средство може да се обработва независимо
+		\item \textbf{Лесно тестване} – състоянието може да се проверява на всеки времеви интервал
+	\end{itemize}
+	
+	\subsection{Визуализация и взаимодействие}
+	
+	Потребителският интерфейс предоставя:
+	
+	\begin{itemize}
+		\item \textbf{Карта} – визуализация на движещите се превозни средства
+		\item \textbf{Контролни бутони} – Start/Pause за управление на симулацията
+		\item \textbf{Панел за инспекция} – детайлна информация за всяко превозно средство
+		\item \textbf{Времева линия} – индикатор за напредъка на симулацията
+	\end{itemize}
+	
+	\section{Архитектура на системата}
+	
+	\subsection{Слоеста архитектура}
+	
+	MetroSim използва слоеста архитектура с ясно разделение на отговорностите:
+	
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{|c|c|}
+			\hline
+			\textbf{Слой} & \textbf{Описание} \\
+			\hline
+			\texttt{app/} & Главна точка на стартиране и инициализация на компонентите \\
+			\hline
+			\texttt{ui/} & Графичен интерфейс (Swing) – прозорци, панели и медиатор \\
+			\hline
+			\texttt{domain/} & Основна симулационна логика – свят, превозни средства, състояния \\
+			\hline
+			\texttt{infrastructure/} & Конкурентен двигател и фасада за управление на симулацията \\
+			\hline
+			\texttt{services/} & Алгоритми за маршрутизиране, зареждане на сценарии и плъгини \\
+			\hline
+			\texttt{metrics/} & Система за измервания и статистики \\
+			\hline
+			\texttt{themes/} & Теми и цветови пакети чрез плъгини \\
+			\hline
+			\texttt{events/} & Събитийна система (Observer) за обновяване на интерфейса \\
+			\hline
+		\end{tabular}
+		\caption{Слоеве в архитектурата на MetroSim}
+	\end{table}
+	
+	\subsection{Модел на паралелност}
+	
+	Системата използва няколко типа нишки за различни задачи:
+	
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{|c|c|}
+			\hline
+			\textbf{Тип нишка} & \textbf{Отговорност} \\
+			\hline
+			EDT (Event Dispatch Thread) & Обработка на графиката и взаимодействие с потребителя \\
+			\hline
+			Симулационен планировчик & Задейства цикъла на симулацията на определени интервали \\
+			\hline
+			Работен пул (ForkJoinPool) & Изпълнява обновленията на превозните средства паралелно \\
+			\hline
+		\end{tabular}
+		\caption{Модел на паралелност в MetroSim}
+	\end{table}
+	
+	\section{Детайлен анализ на класовете}
+	
+	\subsection{Domain слой}
+	
+	\subsubsection{Класове и интерфейси}
+	
+	\paragraph{World}
+	Централният клас, който съхранява състоянието на цялата симулация:
+	
+	\begin{lstlisting}[caption=Основни методи на класа World]
+		public final class World {
+			private final List<Vehicle> vehicles = new ArrayList<>();
+			private final SimClock clock = new SimClock();
+			
+			public List<Vehicle> vehicles() { return vehicles; }
+			public SimClock clock() { return clock; }
+			public void advanceClock() { clock.advance(1); }
+			public WorldSnapshot snapshot(long tickId) { ... }
+		}
+	\end{lstlisting}
+	
+	\paragraph{Vehicle}
+	Представлява превозно средство с вътрешни състояния:
+	
+	\begin{itemize}
+		\item \textbf{Idle} – начално състояние
+		\item \textbf{EnRoute} – движение към дестинация
+		\item \textbf{Dwell} – престой на спирка
+	\end{itemize}
+	
+	\paragraph{VehicleState}
+	Интерфейс за имплементация на State pattern:
+	
+	\begin{lstlisting}[caption=Интерфейс VehicleState]
+		public interface VehicleState {
+			void onTick(Vehicle ctx, SimClock clock, CancellationToken ct);
+			String name();
+		}
+	\end{lstlisting}
+	
+	\paragraph{WorldSnapshot и VehicleSnapshot}
+	Неизменяеми обекти (records), които представляват състоянието в даден момент:
+	
+	\begin{lstlisting}[caption=Snapshot класове]
+		public record WorldSnapshot(long tickId, List<VehicleSnapshot> vehicles) {
+			public static final WorldSnapshot EMPTY = new WorldSnapshot(0, List.of());
+		}
+		
+		public record VehicleSnapshot(String label, int nodeIndex, String stateName) {}
+	\end{lstlisting}
+	
+	\subsection{Infrastructure слой}
+	
+	\subsubsection{SimulationEngine}
+	
+	Ядрото на симулацията, което обработва всички превозни средства паралелно:
+	\vspace{-1mm}
+	\begin{lstlisting}[caption=Ключов метод на SimulationEngine]
+		public WorldSnapshot step(CancellationToken ct) {
+			List<Callable<Void>> tasks = new ArrayList<>();
+			for (Vehicle v : world.vehicles())
+			tasks.add(() -> {
+				v.tick(world.clock(), ct);
+				return null;
+			});
+			invokeAllCancellable(tasks, ct);
+			world.advanceClock();
+			return world.snapshot(tick.incrementAndGet());
+		}
+	\end{lstlisting}
+	
+	\subsubsection{SimulationFacade}
+	
+	Фасада, която скрива сложността на управлението на нишки и синхронизация:
+	
+	\begin{lstlisting}[caption=SimulationFacade управление]
+		public synchronized void start() {
+			if (token.isCancelled()) {
+				token = new CancellationToken();
+			}
+			runner = scheduler.scheduleAtFixedRate(
+			() -> {
+				if (token.isCancelled()) return;
+				WorldSnapshot s = engine.step(token);
+				snapshots.publish(s);
+			}, 0, 50, TimeUnit.MILLISECONDS);
+		}
+	\end{lstlisting}
+	
+	\subsection{Services слой}
+	
+	\subsubsection{Routing подсистема}
+	
+	Системата за маршрутизиране използва Strategy pattern с няколко имплементации:
+	
+	\begin{itemize}
+		\item \textbf{TimeOptimalRouter} – базов алгоритъм за оптимално време
+		\item \textbf{ThirdPartyRouterAdapter} – адаптира външни библиотеки
+		\item \textbf{LoggingRouter} – декоратор за логване
+		\item \textbf{MeteredRouter} – декоратор за метрики
+	\end{itemize}
+	
+	\subsection{UI слой}
+	
+	\subsubsection{MainWindow}
+	
+	Главният прозорец на приложението, който координира всички панели:
+	
+	\begin{lstlisting}[caption=Структура на MainWindow]
+		public MainWindow(Bootstrap.Components c) {
+			MapPanel map = new MapPanel(c.cityPack);
+			TimelinePanel timeline = new TimelinePanel();
+			InspectorPanel inspector = new InspectorPanel();
+			
+			c.simulation.snapshots().subscribe(map);
+			c.simulation.snapshots().subscribe(timeline);
+			c.simulation.snapshots().subscribe(inspector);
+			
+			new MainWindowMediator(c.simulation, start, pause);
+		}
+	\end{lstlisting}
+	
+	\section{Шаблони за проектиране (Design Patterns)}
+	
+	\subsection{Създаващи шаблони (Creational Patterns)}
+	
+	\subsubsection{Abstract Factory}
+	
+	\textbf{Цел:} Предоставя интерфейс за създаване на семейства от свързани обекти.
+	
+	\textbf{Имплементация:} Използва се за създаване на различни теми (Default, Sofia).
+	
+	\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}
+			\umlinterface[x=0, y=4]{CityPackFactory}{
+				+ palette() : Palette \\
+				+ cityName() : String \\
+				+ gridSize() : int
+			}
+			
+			\umlclass[x=-3, y=0]{DefaultPackFactory}{}{
+				+ palette() : Palette \\
+				+ cityName() : String \\
+				+ gridSize() : int
+			}
+			
+			\umlclass[x=3, y=0]{SofiaPackFactory}{}{
+				+ palette() : Palette \\
+				+ cityName() : String \\
+				+ gridSize() : int
+			}
+			
+			\umlclass[x=6, y=4]{Palette}{
+				+ background : Color \\
+				+ grid : Color \\
+				+ vehicle : Color \\
+				+ accent : Color
+			}{}
+			
+			\umlimpl{DefaultPackFactory}{CityPackFactory}
+			\umlimpl{SofiaPackFactory}{CityPackFactory}
+			\umlassoc{CityPackFactory}{Palette}
+		\end{tikzpicture}
+		\caption{UML диаграма на Abstract Factory pattern}
+	\end{figure}
+	
+	\textbf{Предимства:}
+	\begin{itemize}
+		\item Лесно добавяне на нови теми без промяна на съществуващия код
+		\item Гарантира съвместимост между компонентите на дадена тема
+		\item Поддържа плъгин архитектура чрез ServiceLoader
+	\end{itemize}
+	
+	\subsubsection{Builder}
+	
+	\textbf{Цел:} Позволява създаването на сложни обекти стъпка по стъпка.
+	
+	\textbf{Имплементация:} \texttt{ScenarioBuilder} изгражда конфигурации на света.
+	
+	\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}
+			\umlclass[x=-3, y=2]{ScenarioBuilder}{
+				- world : World
+			}{
+				+ addVehicle(label, start, target) : ScenarioBuilder \\
+				+ build() : World
+			}
+			
+			\umlclass[x=4, y=2]{World}{
+				- vehicles : List<Vehicle> \\
+				- clock : SimClock
+			}{
+				+ vehicles() : List<Vehicle> \\
+				+ clock() : SimClock
+			}
+			
+			\umlclass[x=4, y=-1]{Vehicle}{
+				- label : String \\
+				- nodeIndex : int \\
+				- state : VehicleState
+			}{
+				+ tick(clock, ct) : void
+			}
+		
+			\umlassoc{ScenarioBuilder}{World}
+			\umlcompo{World}{Vehicle}
+		\end{tikzpicture}
+		\caption{UML диаграма на Builder pattern}
+	\end{figure}
+
+\textbf{Предимства:}
+\begin{itemize}
+	\item Флуентен API за създаване на сценарии
+	\item Възможност за различни конфигурации без множество конструктори
+	\item Лесно тестване с различни настройки
+\end{itemize}
+
+\subsection{Структурни шаблони (Structural Patterns)}
+
+\subsubsection{Facade}
+
+\textbf{Цел:} Предоставя опростен интерфейс към сложна подсистема.
+
+\textbf{Имплементация:} \texttt{SimulationFacade} скрива сложността на управлението на нишки.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\umlclass[x=0, y=3]{SimulationFacade}{
+			- scheduler : ScheduledExecutorService \\
+			- pool : ExecutorService \\
+			- engine : SimulationEngine \\
+			- token : CancellationToken
+		}{
+			+ start() : void \\
+			+ pause() : void \\
+			+ snapshots() : Subject<WorldSnapshot>
+		}
+		
+		\umlclass[x=6, y=4]{SimulationEngine}{
+			- pool : ExecutorService \\
+			- world : World
+		}{
+			+ step(ct) : WorldSnapshot
+		}
+		
+		\umlclass[x=6, y=1]{Subject<WorldSnapshot>}{
+			- observers : List<Observer>
+		}{
+			+ subscribe(o) : void \\
+			+ publish(value) : void
+		}
+		
+		\umlassoc{SimulationFacade}{SimulationEngine}
+		\umlassoc{SimulationFacade}{Subject<WorldSnapshot>}
+	\end{tikzpicture}
+	\caption{UML диаграма на Facade pattern}
+\end{figure}
+
+\textbf{Предимства:}
+\begin{itemize}
+	\item Скрива сложността на паралелното изпълнение
+	\item Предоставя прост интерфейс за клиентите
+	\item Централизира управлението на ресурсите
+\end{itemize}
+
+\subsubsection{Decorator}
+
+\textbf{Цел:} Добавя ново поведение към обекти динамично без промяна на тяхната структура.
+
+\textbf{Имплементация:} \texttt{MeteredRouter} и \texttt{LoggingRouter} добавят функционалност към базовите маршрутизатори.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\umlinterface[x=0, y=4]{Router}{
+			+ compute(req, ct) : Route
+		}
+		
+		\umlclass[x=-5, y=1]{TimeOptimalRouter}{}{
+			+ compute(req, ct) : Route
+		}
+		
+		\umlclass[x=0, y=1]{LoggingRouter}{
+			- inner : Router \\
+			- metrics : MetricsRegistry
+		}{
+			+ compute(req, ct) : Route
+		}
+		
+		\umlclass[x=5, y=1]{MeteredRouter}{
+			- inner : Router \\
+			- metrics : MetricsRegistry
+		}{
+			+ compute(req, ct) : Route
+		}
+		
+		\umlimpl{TimeOptimalRouter}{Router}
+		\umlimpl{LoggingRouter}{Router}
+		\umlimpl{MeteredRouter}{Router}
+		\umlassoc{LoggingRouter}{Router}
+		\umlassoc{MeteredRouter}{Router}
+	\end{tikzpicture}
+	\caption{UML диаграма на Decorator pattern}
+\end{figure}
+
+\textbf{Предимства:}
+\begin{itemize}
+	\item Гъвкаво композиране на функционалности
+	\item Спазване на Open/Closed principle
+	\item Възможност за многократно декориране
+\end{itemize}
+
+\subsubsection{Adapter}
+
+\textbf{Цел:} Позволява на класове с несъвместими интерфейси да работят заедно.
+
+\textbf{Имплементация:} \texttt{ThirdPartyRouterAdapter} адаптира външна библиотека за маршрутизиране.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\umlinterface[x=0, y=3]{Router}{
+			+ compute(req, ct) : Route
+		}
+		
+		\umlclass[x=7, y=0]{ThirdPartyPathfinder}{}{
+			+ findPath(src, dst) : List<Integer>
+		}
+		
+		\umlclass[x=0, y=0]{ThirdPartyRouterAdapter}{
+			- lib : ThirdPartyPathfinder
+		}{
+			+ compute(req, ct) : Route
+		}
+		
+		\umlimpl{ThirdPartyRouterAdapter}{Router}
+		\umlassoc{ThirdPartyRouterAdapter}{ThirdPartyPathfinder}
+	\end{tikzpicture}
+	\caption{UML диаграма на Adapter pattern}
+\end{figure}
+\newpage
+\textbf{Предимства:}
+\begin{itemize}
+	\item Интеграция на външни библиотеки без промяна в тях
+	\item Запазване на съществуващите интерфейси
+	\item Изолиране на зависимостите към външни системи
+\end{itemize}
+
+\subsection{Поведенчески шаблони (Behavioral Patterns)}
+
+\subsubsection{Observer}
+
+\textbf{Цел:} Дефинира зависимост тип „един-към-много“ между обекти.
+
+\textbf{Имплементация:} \texttt{Subject} публикува snapshot-и към UI панелите.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\umlclass[x=0, y=4]{Subject<T>}{
+			- observers : List<Observer<T>>
+		}{
+			+ subscribe(o) : void \\
+			+ unsubscribe(o) : void \\
+			+ publish(value) : void
+		}
+		
+		\umlinterface[x=5, y=4]{Observer<T>}{
+			+ onNext(value) : void
+		}
+		
+		\umlclass[x=0, y=1]{MapPanel}{}{
+			+ onNext(snapshot) : void
+		}
+		
+		\umlclass[x=5, y=1]{TimelinePanel}{}{
+			+ onNext(snapshot) : void
+		}
+		
+		\umlclass[x=10, y=1]{InspectorPanel}{}{
+			+ onNext(snapshot) : void
+		}
+		
+		\umlassoc{Subject<T>}{Observer<T>}
+		\umlimpl{MapPanel}{Observer<T>}
+		\umlimpl{TimelinePanel}{Observer<T>}
+		\umlimpl{InspectorPanel}{Observer<T>}
+	\end{tikzpicture}
+	\caption{UML диаграма на Observer pattern}
+\end{figure}
+
+\textbf{Предимства:}
+\begin{itemize}
+	\item Слабо свързване между издател и наблюдатели
+	\item Динамично добавяне/премахване на наблюдатели
+	\item Поддържа broadcast комуникация
+\end{itemize}
+
+\subsubsection{State}
+
+\textbf{Цел:} Позволява на обект да променя поведението си при промяна на вътрешното състояние.
+
+\textbf{Имплементация:} \texttt{Vehicle} преминава през различни състояния (Idle → EnRoute → Dwell).
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\umlinterface[x=4, y=4]{VehicleState}{
+			+ onTick(ctx, clock, ct) : void \\
+			+ name() : String
+		}
+		
+		\umlclass[x=-4, y=3]{Vehicle}{
+			- state : VehicleState \\
+			- nodeIndex : int \\
+			- targetIndex : int \\
+			- label : String
+		}{
+			+ tick(clock, ct) : void \\
+			+ setState(s) : void \\
+			+ stateName() : String
+		}
+		
+		\umlclass[x=-2, y=0]{Idle}{}{
+			+ onTick(ctx, clock, ct) : void \\
+			+ name() : String
+		}
+		
+		\umlclass[x=4, y=0]{EnRoute}{}{
+			+ onTick(ctx, clock, ct) : void \\
+			+ name() : String
+		}
+		
+		\umlclass[x=10, y=0]{Dwell}{
+			- remaining : int
+		}{
+			+ onTick(ctx, clock, ct) : void \\
+			+ name() : String
+		}
+		
+		\umlassoc{Vehicle}{VehicleState}
+		\umlimpl{Idle}{VehicleState}
+		\umlimpl{EnRoute}{VehicleState}
+		\umlimpl{Dwell}{VehicleState}
+	\end{tikzpicture}
+	\caption{UML диаграма на State pattern}
+\end{figure}
+
+\textbf{Логика на преходите:}
+\begin{itemize}
+	\item \textbf{Idle → EnRoute:} При започване на симулацията
+	\item \textbf{EnRoute → Dwell:} При достигане на дестинация
+	\item \textbf{Dwell → EnRoute:} След изтичане на времето за престой
+\end{itemize}
+
+\subsubsection{Strategy}
+
+\textbf{Цел:} Дефинира семейство от алгоритми и ги прави взаимозаменяеми.
+
+\textbf{Имплементация:} \texttt{Router} интерфейсът позволява различни алгоритми за маршрутизиране.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\umlinterface[x=0, y=3]{Router}{
+			+ compute(req, ct) : Route
+		}
+		
+		\umlclass[x=-5, y=0]{TimeOptimalRouter}{}{
+			+ compute(req, ct) : Route
+		}
+		
+		\umlclass[x=5, y=0]{ThirdPartyRouterAdapter}{
+			- lib : ThirdPartyPathfinder
+		}{
+			+ compute(req, ct) : Route
+		}
+		
+		\umlclass[x=0, y=0]{CustomRouter}{}{
+			+ compute(req, ct) : Route
+		}
+		
+		\umlimpl{TimeOptimalRouter}{Router}
+		\umlimpl{ThirdPartyRouterAdapter}{Router}
+		\umlimpl{CustomRouter}{Router}
+	\end{tikzpicture}
+	\caption{UML диаграма на Strategy pattern}
+\end{figure}
+
+\textbf{Стратегии:}
+\begin{itemize}
+	\item \textbf{TimeOptimalRouter:} Най-кратко време за пътуване
+	\item \textbf{ThirdPartyRouterAdapter:} Използва външна библиотека
+	\item \textbf{CustomRouter:} Потребителски алгоритми (възможност за разширение)
+\end{itemize}
+
+\subsubsection{Command + Memento}
+
+\textbf{Цел:} Капсулира заявка като обект и поддържа undo/redo операции.
+
+\textbf{Имплементация:} \texttt{CommandStack} осигурява scaffold за бъдещи editing функции.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\umlinterface[x=0, y=3]{Command}{
+			+ execute() : void \\
+			+ undo() : void
+		}
+		
+		\umlclass[x=5, y=3]{CommandStack}{
+			- undo : Deque<Command> \\
+			- redo : Deque<Command>
+		}{
+			+ apply(c) : void \\
+			+ undo() : void \\
+			+ redo() : void
+		}
+		
+		\umlclass[x=0, y=0]{ConcreteCommand}{
+			- receiver : Object \\
+			- state : Memento
+		}{
+			+ execute() : void \\
+			+ undo() : void
+		}
+		
+		\umlassoc{CommandStack}{Command}
+		\umlimpl{ConcreteCommand}{Command}
+	\end{tikzpicture}
+	\caption{UML диаграма на Command + Memento pattern}
+\end{figure}
+
+\textbf{Възможности за разширение:}
+\begin{itemize}
+	\item Команди за добавяне/премахване на превозни средства
+	\item Команди за промяна на маршрути
+	\item Команди за конфигуриране на симулацията
+\end{itemize}
+
+\section{Конкурентност и паралелизъм}
+
+\subsection{Модел на нишки}
+
+MetroSim използва софистициран модел на паралелност за да осигури:
+\begin{itemize}
+	\item \textbf{Отзивчив потребителски интерфейс}
+	\item \textbf{Ефективна обработка на превозните средства}
+	\item \textbf{Безопасна синхронизация}
+\end{itemize}
+
+\subsection{Архитектура на нишките}
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		% EDT Thread
+		\draw[fill=lightblue, rounded corners] (0,6) rectangle (3,8);
+		\node[align=center] at (1.5,7) {\textbf{EDT Thread} \\ UI Updates \\ User Interaction};
+		
+		% Scheduler Thread
+		\draw[fill=lightgreen, rounded corners] (4,6) rectangle (7,8);
+		\node[align=center] at (5.5,7) {\textbf{Scheduler} \\ Periodic Ticks \\ 50ms intervals};
+		
+		% Worker Pool
+		\draw[fill=lightyellow, rounded corners] (8,6) rectangle (11,8);
+		\node[align=center] at (9.5,7) {\textbf{Worker Pool} \\ Vehicle Updates \\ Parallel Execution};
+		
+		% Data Flow
+		\draw[->, thick] (5.5,6) -- (5.5,4.5) -- (1.5,4.5) -- (1.5,6);
+		\node[above] at (3.5,4.5) {WorldSnapshot};
+		
+		\draw[->, thick] (5.5,6) -- (5.5,3.5) -- (9.5,3.5) -- (9.5,6);
+		\node[below] at (7.5,3.5) {Parallel Tasks};
+		
+		% Synchronization
+		\draw[fill=lightcoral, rounded corners] (6,1) rectangle (9,3);
+		\node[align=center] at (7.5,2) {\textbf{CancellationToken} \\ Thread-safe \\ Coordination};
+		
+		\draw[dashed] (7.5,3) -- (5.5,6);
+		\draw[dashed] (7.5,3) -- (9.5,6);
+	\end{tikzpicture}
+	\caption{Архитектура на нишките в MetroSim}
+\end{figure}
+
+\subsection{Синхронизационни механизми}
+
+\subsubsection{CancellationToken}
+
+Осигурява кооперативно прекъсване на операции:
+
+\begin{lstlisting}[caption=CancellationToken имплементация]
+	public final class CancellationToken {
+		private final AtomicBoolean cancelled = new AtomicBoolean(false);
+		
+		public boolean isCancelled() {
+			return cancelled.get();
+		}
+		
+		public void cancel() {
+			cancelled.set(true);
+		}
+	}
+\end{lstlisting}
+
+\subsubsection{Неизменяеми обекти (Immutable Objects)}
+
+Всички данни, които се предават между нишки, са неизменяеми:
+
+\begin{itemize}
+	\item \texttt{WorldSnapshot} – състояние на света
+	\item \texttt{VehicleSnapshot} – състояние на превозно средство
+	\item \texttt{Route} – маршрут между две точки
+\end{itemize}
+
+\subsection{Предотвратяване на състезателни условия}
+
+\begin{enumerate}
+	\item \textbf{Copy-on-read:} Снимките се правят преди публикуване
+	\item \textbf{Атомични операции:} Използват се за ъпдейт на състоянието
+	\item \textbf{Synchronized блокове:} За критичните секции в SimulationFacade
+	\item \textbf{Volatile променливи:} За видимост между нишки
+\end{enumerate}
+
+\section{Метрики и наблюдение}
+
+\subsection{MetricsRegistry система}
+
+Системата за метрики позволява проследяване на производителността:
+
+\begin{lstlisting}[caption=MetricsRegistry интерфейс]
+	public interface MetricsRegistry {
+		void counter(String name, long delta);
+		void recordTime(String name, long nanos);
+		long getCounter(String name);
+		long getTimeSum(String name);
+	}
+\end{lstlisting}
+
+\subsection{Типове метрики}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|}
+		\hline
+		\textbf{Тип метрика} & \textbf{Описание} \\
+		\hline
+		routing.count & Общ брой извършени маршрутизации \\
+		\hline
+		routing.total.ns & Общо време за маршрутизация в наносекунди \\
+		\hline
+		routing.logged & Брой логнати маршрутизации \\
+		\hline
+		simulation.ticks & Общ брой симулационни tick-ове \\
+		\hline
+	\end{tabular}
+	\caption{Поддържани метрики в системата}
+\end{table}
+
+\subsection{Декоратори за метрики}
+
+Метриките се събират чрез Decorator pattern:
+
+\begin{lstlisting}[caption=MeteredRouter декоратор]
+	public Route compute(RouteRequest req, CancellationToken ct) {
+		long t0 = System.nanoTime();
+		try {
+			return inner.compute(req, ct);
+		} finally {
+			metrics.recordTime("routing.total.ns", System.nanoTime() - t0);
+			metrics.counter("routing.count", 1);
+		}
+	}
+\end{lstlisting}
+
+\section{Система за плъгини и разширяемост}
+
+\subsection{ServiceLoader архитектура}
+
+MetroSim използва Java ServiceLoader за откриване на плъгини по време на изпълнение:
+
+\begin{lstlisting}[caption=Плъгин discovery в Bootstrap]
+	private static CityPackFactory resolveCityPack() {
+		String want = System.getProperty("metrosim.cityPack", "");
+		CityPackFactory fallback = new DefaultPackFactory();
+		var loader = ServiceLoader.load(CityPackFactory.class);
+		
+		for (CityPackFactory f : loader) {
+			String name = f.cityName().toLowerCase();
+			if (!want.isEmpty() && name.contains(want)) {
+				return f;
+			}
+		}
+		return fallback;
+	}
+\end{lstlisting}
+
+\subsection{Конфигурационен файл}
+
+Плъгините се регистрират в \texttt{META-INF/services/metrosim.themes.CityPackFactory}:
+
+\begin{lstlisting}[caption=Регистрация на плъгини]
+	metrosim.themes.DefaultPackFactory
+	metrosim.themes.SofiaPackFactory
+\end{lstlisting}
+
+\subsection{Примерни плъгини}
+
+\subsubsection{Sofia Pack Factory}
+
+\begin{lstlisting}[caption=SofiaPackFactory имплементация]
+	public final class SofiaPackFactory implements CityPackFactory {
+		public Palette palette() {
+			return new Palette(
+			new Color(0x0f1220), // background
+			new Color(0x2d355c), // grid
+			new Color(0x58d68d), // vehicle
+			new Color(0xf7dc6f)  // accent
+			);
+		}
+		
+		public String cityName() { return "Sofia"; }
+		public int gridSize() { return 22; }
+	}
+\end{lstlisting}
+
+\subsection{Точки за разширение}
+
+Системата предоставя следните точки за разширение:
+
+\begin{itemize}
+	\item \textbf{CityPackFactory} – нови визуални теми
+	\item \textbf{Router} – нови алгоритми за маршрутизиране
+	\item \textbf{VehicleState} – нови поведения на превозните средства
+	\item \textbf{Command} – нови команди за редактиране
+	\item \textbf{Observer} – нови типове панели за визуализация
+\end{itemize}
+
+\section{Тестване и качество на кода}
+
+\subsection{Архитектурни принципи}
+
+Проектът следва основни принципи за качествен софтуер:
+
+\begin{itemize}
+	\item \textbf{SOLID принципи} – всеки клас има ясна отговорност
+	\item \textbf{DRY (Don't Repeat Yourself)} – избягване на дублиране на код
+	\item \textbf{KISS (Keep It Simple, Stupid)} – простота в дизайна
+	\item \textbf{Separation of Concerns} – ясно разделение на отговорностите
+\end{itemize}
+
+\subsection{Кодови конвенции}
+
+Проектът използва:
+\begin{itemize}
+	\item \textbf{Google Java Format} за форматиране на кода
+	\item \textbf{Spotless} за автоматична корекция на стила
+	\item \textbf{Gradle} за управление на build процеса
+\end{itemize}
+
+\subsection{Паралелно тестване}
+
+Архитектурата позволява лесно unit тестване:
+
+\begin{itemize}
+	\item \textbf{Injection на зависимости} чрез конструктори
+	\item \textbf{Интерфейси} за всички основни компоненти
+	\item \textbf{Неизменяеми обекти} за предвидимо поведение
+	\item \textbf{CancellationToken} за контролирано прекъсване
+\end{itemize}
+
+\section{Инструкции за стартиране и конфигуриране}
+
+\subsection{Системни изисквания}
+
+\begin{itemize}
+	\item Java Development Kit (JDK) 17 или по-нова версия
+	\item Операционна система с поддръжка на Java Swing
+	\item Минимум 512MB RAM за изпълнение
+\end{itemize}
+
+\subsection{Компилиране и стартиране}
+
+\subsubsection{Основни команди}
+
+\begin{lstlisting}[language=bash, caption=Основни Gradle команди]
+	./gradlew build
+	
+	./gradlew run
+	
+	./gradlew run -Dmetrosim.cityPack=sofia
+	./gradlew clean
+\end{lstlisting}
+
+\subsubsection{Конфигурационни опции}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|}
+		\hline
+		\textbf{Системно свойство} & \textbf{Описание} \\
+		\hline
+		metrosim.cityPack & Избор на градска тема (default, sofia) \\
+		\hline
+		java.awt.headless & Задава се на false за GUI режим \\
+		\hline
+	\end{tabular}
+	\caption{Конфигурационни параметри}
+\end{table}
+
+\subsection{Структура на проекта}
+
+\begin{lstlisting}[caption=Структура на директориите]
+|   build.gradle
+|   gradlew
+|   gradlew.bat
+|   README.md
+|   settings.gradle
+|
+|---.github
+|   |---workflows
+|           gradle.yml
+|
+|---documentation
+|       MetroSim_Documentation_BG.aux
+|       MetroSim_Documentation_BG.log
+|       MetroSim_Documentation_BG.out
+|       MetroSim_Documentation_BG.pdf
+|       MetroSim_Documentation_BG.synctex.gz
+|       MetroSim_Documentation_BG.tex
+|       MetroSim_Documentation_BG.toc
+|       tikz-uml.sty
+|
+|---gradle
+|   |---wrapper
+|           gradle-wrapper.jar
+|           gradle-wrapper.properties
+|
+|---src
+    |---main
+        |---java
+        |   |---metrosim
+        |       |---app
+        |       |       Bootstrap.java
+        |       |       MetroSimApp.java
+        |       |
+        |       |---domain
+        |       |       Passenger.java
+        |       |       SimClock.java
+        |       |       Vehicle.java
+        |       |       VehicleSnapshot.java
+        |       |       VehicleState.java
+        |       |       World.java
+        |       |       WorldSnapshot.java
+        |       |
+        |       |---events
+        |       |       Event.java
+        |       |       EventType.java
+        |       |       Observer.java
+        |       |       Subject.java
+        |       |
+        |       |---infrastructure
+        |       |       SimulationEngine.java
+        |       |       SimulationFacade.java
+        |       |
+        |       |---metrics
+        |       |       MetricsRegistry.java
+        |       |       SimpleMetricsRegistry.java
+        |       |
+        |       |---services
+        |       |   |---routing
+        |       |   |       LoggingRouter.java
+        |       |   |       MeteredRouter.java
+        |       |   |       Route.java
+        |       |   |       Router.java
+        |       |   |       RouteRequest.java
+        |       |   |       ThirdPartyPathfinder.java
+        |       |   |       ThirdPartyRouterAdapter.java
+        |       |   |       TimeOptimalRouter.java
+        |       |   |
+        |       |   |---scenario
+        |       |           ScenarioBuilder.java
+        |       |           ScenarioLoader.java
+        |       |
+        |       |---themes
+        |       |       CityPackFactory.java
+        |       |       DefaultPackFactory.java
+        |       |       Palette.java
+        |       |       SofiaPackFactory.java
+        |       |
+        |       |---ui
+        |       |   |   InspectorPanel.java
+        |       |   |   MainWindow.java
+        |       |   |   MainWindowMediator.java
+        |       |   |   MapPanel.java
+        |       |   |   TimelinePanel.java
+        |       |   |
+        |       |   |---commands
+        |       |           Command.java
+        |       |           CommandStack.java
+        |       |
+        |       |---util
+        |               CancellationToken.java
+        |
+        |---resources
+            |---META-INF
+            |   |---services
+            |           metrosim.themes.CityPackFactory
+            |
+            |---scenarios
+                    sample.scn
+\end{lstlisting}
+
+\section{Бъдещо развитие и разширения}
+
+\subsection{Планирани функции}
+
+\begin{itemize}
+	\item \textbf{Редактор на сценарии} – графичен интерфейс за създаване на сценарии
+	\item \textbf{Записване и възпроизвеждане} – запазване на симулации
+	\item \textbf{Статистики в реално време} – графично представяне на метриките
+	\item \textbf{Мрежови режим} – симулация на множество клиенти
+	\item \textbf{3D визуализация} – по-реалистично представяне
+\end{itemize}
+
+\subsection{Възможни разширения}
+
+\subsubsection{Нови типове превозни средства}
+\begin{itemize}
+	\item Автобуси с различни капацитети
+	\item Трамваи с фиксирани релси
+	\item Товарни превозни средства
+\end{itemize}
+
+\subsubsection{Сложни маршрути}
+\begin{itemize}
+	\item Условно маршрутизиране
+	\item Динамично пренасочване
+	\item Оптимизация по няколко критерия
+\end{itemize}
+
+\subsubsection{Интерактивност}
+\begin{itemize}
+	\item Добавяне на превозни средства по време на симулация
+	\item Промяна на маршрути в реално време
+	\item Симулиране на инциденти и закъснения
+\end{itemize}
+
+\section{Заключение}
+
+\subsection{Постигнати цели}
+
+MetroSim успешно демонстрира:
+
+\begin{itemize}
+	\item \textbf{Практическо приложение} на девет различни Design Patterns
+	\item \textbf{Безопасна паралелност} в Java Swing приложения
+	\item \textbf{Модулна архитектура} с ясно разделение на отговорностите
+	\item \textbf{Разширяема система} за плъгини и теми
+	\item \textbf{Реално време симулация} с отзивчив потребителски интерфейс
+\end{itemize}
+
+\subsection{Образователна стойност}
+
+Проектът предоставя отлична основа за обучение по:
+
+\begin{itemize}
+	\item \textbf{Object-Oriented Design} – правилно използване на наследяване и полиморфизъм
+	\item \textbf{Concurrent Programming} – безопасна работа с множество нишки
+	\item \textbf{Software Architecture} – изграждане на сложни, поддържаеми системи
+	\item \textbf{Design Patterns} – практическо приложение в реален проект
+\end{itemize}
+
+\subsection{Техническо качество}
+
+Кодовата база поддържа високи стандарти за качество:
+
+\begin{itemize}
+	\item \textbf{Четим и добре документиран код}
+	\item \textbf{Consistent code style} чрез автоматично форматиране
+	\item \textbf{Модулна структура} за лесно разширение
+	\item \textbf{Ефективно използване на паметта} чрез immutable обекти
+	\item \textbf{Thread-safe архитектура} без състезателни условия
+\end{itemize}
+
+\subsection{Практическа приложимост}
+
+Принципите и шаблоните, демонстрирани в MetroSim, могат да се приложат в:
+
+\begin{itemize}
+	\item \textbf{Реални симулационни системи}
+	\item \textbf{Игрови двигатели}
+	\item \textbf{Финансови системи за трейдинг}
+	\item \textbf{IoT и embedded системи}
+	\item \textbf{Микросервизна архитектура}
+\end{itemize}
+
+MetroSim представлява солиден пример за това как правилното прилагане на Design Patterns и принципите за добра софтуерна архитектура могат да доведат до създаването на мащабируеми, поддържаеми и разширяеми системи.
+
+\section*{Приложения}
+
+\subsection*{A. Пълен UML клас диаграм на системата}
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[scale=0.8]
+		% Domain Layer
+		\umlclass[x=-4, y=10]{World}{
+			- vehicles : List<Vehicle> \\
+			- clock : SimClock
+		}{
+			+ vehicles() : List<Vehicle> \\
+			+ clock() : SimClock \\
+			+ advanceClock() : void \\
+			+ snapshot(tickId) : WorldSnapshot
+		}
+		
+		\umlclass[x=4, y=10]{Vehicle}{
+			- state : VehicleState \\
+			- nodeIndex : int \\
+			- targetIndex : int \\
+			- label : String
+		}{
+			+ tick(clock, ct) : void \\
+			+ setState(s) : void \\
+			+ stateName() : String
+		}
+		
+		% Infrastructure Layer
+		\umlclass[x=-4, y=4]{SimulationEngine}{
+			- pool : ExecutorService \\
+			- world : World \\
+			- tick : AtomicLong
+		}{
+			+ step(ct) : WorldSnapshot
+		}
+		
+		\umlclass[x=4, y=4]{SimulationFacade}{
+			- scheduler : ScheduledExecutorService \\
+			- engine : SimulationEngine \\
+			- snapshots : Subject<WorldSnapshot>
+		}{
+			+ start() : void \\
+			+ pause() : void \\
+			+ snapshots() : Subject<WorldSnapshot>
+		}
+		
+		% UI Layer
+		\umlclass[x=11, y=8]{MainWindow}{
+			- components : Bootstrap.Components
+		}{
+			+ MainWindow(c) : void
+		}
+		
+		\umlclass[x=12, y=4]{MapPanel}{
+			- snapshot : WorldSnapshot \\
+			- packs : CityPackFactory
+		}{
+			+ onNext(s) : void \\
+			+ paintComponent(g) : void
+		}
+		
+		% Services Layer
+		\umlinterface[x=-4, y=0]{Router}{
+			+ compute(req, ct) : Route
+		}
+		
+		\umlclass[x=4, y=0]{MeteredRouter}{
+			- inner : Router \\
+			- metrics : MetricsRegistry
+		}{
+			+ compute(req, ct) : Route
+		}
+		
+		% Associations
+		\umlcompo{World}{Vehicle}
+		\umlassoc{SimulationEngine}{World}
+		\umlassoc{SimulationFacade}{SimulationEngine}
+		\umlassoc{MainWindow}{MapPanel}
+		\umlimpl{MeteredRouter}{Router}
+	\end{tikzpicture}
+	\caption{Опростен UML клас диаграм на цялата система}
+\end{figure}
+
+\subsection*{B. Последователност диаграм на симулационния цикъл}
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\begin{umlseqdiag}
+			\umlactor[class=User, y=-1]{user}
+			\umlobject[class=MainWindow]{mw}
+			\umlobject[class=SimulationFacade]{sf}
+			\umlobject[class=SimulationEngine]{se}
+			\umlobject[class=Vehicle]{veh}
+			
+			% user -> mw : click
+			\begin{umlcall}[op=click Start, dt=2]{user}{mw}
+			\end{umlcall}
+			
+			% mw -> sf : start()
+			\begin{umlcall}[op=start(), return=runner, dt=2]{mw}{sf}
+			\end{umlcall}
+			
+			% loop: every 50 ms
+		    %\begin{umlfragment}[type=loop, label={every 50 ms}, inner xsep=8, inner ysep=8]
+				\begin{umlcall}[op={step(token)}, return={\scriptsize WorldSnapshot}, dt=2]{sf}{se}\end{umlcall}
+				\begin{umlcall}[op={tick(clock, token)}, dt=2]{se}{veh}\end{umlcall}
+				\begin{umlcall}[op={publish(snapshot)}, dt=2]{sf}{mw}\end{umlcall}
+		%	\end{umlfragment}
+		\end{umlseqdiag}
+	\end{tikzpicture}
+	\caption{Последователностна диаграма на симулационния цикъл}
+\end{figure}
+
+\subsection*{C. Справочник на ключовите класове}
+
+\begin{table}[H]
+	\centering
+	\small
+	\begin{tabular}{|c|c|c|}
+		\hline
+		\textbf{Клас} & \textbf{Пакет} & \textbf{Отговорност} \\
+		\hline
+		Bootstrap & app & Инициализация и конфигуриране на компонентите \\
+		\hline
+		MetroSimApp & app & Главна точка на стартиране \\
+		\hline
+		World & domain & Централно състояние на симулацията \\
+		\hline
+		Vehicle & domain & Превозно средство с вътрешни състояния \\
+		\hline
+		SimulationEngine & infrastructure & Ядро на симулацията с паралелна обработка \\
+		\hline
+		SimulationFacade & infrastructure & Опростен интерфейс за управление на симулацията \\
+		\hline
+		Router & services.routing & Стратегия за изчисляване на маршрути \\
+		\hline
+		CityPackFactory & themes & Фабрика за създаване на визуални теми \\
+		\hline
+		Subject & events & Събитийна система за Observer pattern \\
+		\hline
+		MainWindow & ui & Главен прозорец на приложението \\
+		\hline
+		CommandStack & ui.commands & Система за undo/redo операции \\
+		\hline
+	\end{tabular}
+	\caption{Справочник на ключовите класове}
+\end{table}
+
+\end{document}
