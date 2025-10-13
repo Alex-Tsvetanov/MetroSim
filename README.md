@@ -133,6 +133,270 @@
 ./gradlew run -Dmetrosim.cityPack=sofia
 ```
 
+## UML диаграми
+<details>
+<summary><b>Strategy</b></summary>
+
+```mermaid
+classDiagram
+    direction LR
+    class Router {
+      <<interface>>
+      +compute(req: RouteRequest, ct: CancellationToken): Route
+    }
+
+    class TimeOptimalRouter
+    TimeOptimalRouter ..|> Router
+
+    class ThirdPartyRouterAdapter
+    ThirdPartyRouterAdapter ..|> Router
+
+    class RouteRequest
+    class Route
+    class CancellationToken
+
+    Router --> RouteRequest
+    Router --> Route
+    Router --> CancellationToken
+```
+</details>
+
+<details>
+<summary><b>Decorator</b></summary>
+
+```mermaid
+classDiagram
+    direction LR
+    class Router {
+      <<interface>>
+      +compute(req: RouteRequest, ct: CancellationToken): Route
+    }
+
+    class LoggingRouter {
+      -inner: Router
+      +compute(...)
+    }
+    class MeteredRouter {
+      -inner: Router
+      -metrics: MetricsRegistry
+      +compute(...)
+    }
+
+    LoggingRouter ..|> Router
+    MeteredRouter ..|> Router
+    LoggingRouter --> Router : wraps
+    MeteredRouter --> Router : wraps
+    MeteredRouter --> MetricsRegistry
+```
+</details>
+<details>
+<summary><b>Adapter</b></summary>
+
+```mermaid
+classDiagram
+    direction LR
+    class Router {
+      <<interface>>
+      +compute(req: RouteRequest, ct: CancellationToken): Route
+    }
+
+    class ThirdPartyPathfinder {
+      +findPath(src:int, dst:int): List<int>
+    }
+
+    class ThirdPartyRouterAdapter {
+      -lib: ThirdPartyPathfinder
+      +compute(...): Route
+    }
+
+    ThirdPartyRouterAdapter ..|> Router
+    ThirdPartyRouterAdapter --> ThirdPartyPathfinder : adapts
+```
+</details>
+<details>
+<summary><b>Facade</b></summary>
+
+```mermaid
+classDiagram
+    direction LR
+    class SimulationFacade {
+      -scheduler: ScheduledExecutorService
+      -pool: ExecutorService
+      -engine: SimulationEngine
+      -token: CancellationToken
+      -runner: ScheduledFuture
+      +start()
+      +pause()
+      +snapshots(): Subject~WorldSnapshot~
+    }
+
+    class SimulationEngine {
+      -pool: ExecutorService
+      -world: World
+      +step(ct: CancellationToken): WorldSnapshot
+    }
+
+    class Subject~WorldSnapshot~
+    class WorldSnapshot
+    class World
+
+    SimulationFacade --> SimulationEngine
+    SimulationFacade --> Subject~WorldSnapshot~
+    SimulationEngine --> World
+    SimulationEngine --> WorldSnapshot
+```
+</details>
+<details>
+<summary><b>Observer</b></summary>
+
+```mermaid
+classDiagram
+    direction LR
+    class Subject~T~ {
+      +subscribe(o: Observer~T~)
+      +unsubscribe(o: Observer~T~)
+      +publish(value: T)
+    }
+    class Observer~T~ {
+      <<interface>>
+      +onNext(value: T)
+    }
+
+    class MapPanel
+    class TimelinePanel
+    class InspectorPanel
+    class WorldSnapshot
+
+    Observer~WorldSnapshot~ <|.. MapPanel
+    Observer~WorldSnapshot~ <|.. TimelinePanel
+    Observer~WorldSnapshot~ <|.. InspectorPanel
+
+    Subject~WorldSnapshot~ --> WorldSnapshot
+    MapPanel ..> Subject~WorldSnapshot~ : subscribes to
+    TimelinePanel ..> Subject~WorldSnapshot~ : subscribes to
+    InspectorPanel ..> Subject~WorldSnapshot~ : subscribes to
+```
+</details>
+<details>
+<summary><b>State</b></summary>
+
+```mermaid
+classDiagram
+    direction LR
+    class VehicleState {
+      <<interface>>
+      +onTick(ctx: Vehicle, clock: SimClock, ct: CancellationToken)
+      +name(): String
+    }
+
+    class Vehicle {
+      -state: VehicleState
+      -nodeIndex: int
+      -targetIndex: int
+      +tick(clock, ct)
+      +transition(s: VehicleState)
+    }
+
+    class Idle
+    class EnRoute
+    class Dwell
+
+    Vehicle --> VehicleState : current
+    Idle ..|> VehicleState
+    EnRoute ..|> VehicleState
+    Dwell ..|> VehicleState
+```
+</details>
+<details>
+<summary><b>Abstract Factory</b></summary>
+
+```mermaid
+classDiagram
+    direction LR
+    class CityPackFactory {
+      <<interface>>
+      +palette(): Palette
+      +cityName(): String
+      +gridSize(): int
+    }
+
+    class DefaultPackFactory
+    class SofiaPackFactory
+    class Palette {
+      background: Color
+      grid: Color
+      vehicle: Color
+      accent: Color
+    }
+
+    DefaultPackFactory ..|> CityPackFactory
+    SofiaPackFactory ..|> CityPackFactory
+    CityPackFactory --> Palette
+```
+</details>
+<details>
+<summary><b>Builder</b></summary>
+
+```mermaid
+classDiagram
+    direction LR
+    class ScenarioBuilder {
+      -world: World
+      +addVehicle(label:String, start:int, target:int): ScenarioBuilder
+      +build(): World
+    }
+
+    class World
+    class Vehicle
+
+    ScenarioBuilder --> World : builds
+    World "1" o--> "*" Vehicle : contains
+```
+</details>
+<details>
+<summary><b>Command + Memento</b></summary>
+
+```mermaid
+classDiagram
+    direction LR
+    class Command {
+      <<interface>>
+      +execute()
+      +undo()
+    }
+
+    class CommandStack {
+      -undo: Deque~Command~
+      -redo: Deque~Command~
+      +apply(c: Command)
+      +undo()
+      +redo()
+    }
+
+    CommandStack --> Command : stores & executes
+```
+</details>
+<details>
+<summary><b>Mediator</b></summary>
+
+```mermaid
+classDiagram
+    direction LR
+    class MainWindowMediator {
+      -sim: SimulationFacade
+      -startBtn: JButton
+      -pauseBtn: JButton
+      +~wire()
+    }
+
+    class SimulationFacade
+    class JButton
+
+    MainWindowMediator --> SimulationFacade : calls start/pause
+    MainWindowMediator --> JButton : listens to actions
+```
+</details>
+
 # 🧭 Project Task Description  
 ### MetroSim: Concurrent Transit Network Simulator (Swing, Java 17)
 
